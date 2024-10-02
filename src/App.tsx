@@ -1,10 +1,39 @@
 import axios from "axios";
 
+//! Promise(ES6 비동기 처리 패턴)
+
+type TodoType = {
+  id: number;
+  todo: string;
+  desc: string;
+  done: boolean;
+};
+
+const listUrl = "/api/todolist_long/gdhong";
+const todoUrlPrefix = "/api/todolist_long/gdhong/";
+
 const requestAPI = () => {
-  const url = "/api/todolist/gdhong";
-  axios.get(url).then((responst) => {
-    console.log("# 응답 객체 : ", responst);
-  });
+  let todoList: Array<TodoType> = [];
+
+  axios
+    .get(listUrl)
+    .then((response) => {
+      todoList = response.data;
+      console.log("# TodoList : ", todoList);
+      return todoList[0].id;
+    })
+    .then((id) => {
+      return axios.get(todoUrlPrefix + id);
+    })
+    .then((response) => {
+      console.log("## 첫 번째 Todo : ", response.data);
+      return todoList[1].id;
+    })
+    .then((id) => {
+      axios.get(todoUrlPrefix + id).then((response) => {
+        console.log("## 두 번째 Todo : ", response.data);
+      });
+    });
 };
 requestAPI();
 
