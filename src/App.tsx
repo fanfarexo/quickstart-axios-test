@@ -1,77 +1,39 @@
 import axios from "axios";
 
-type TodoType = {
-  id: number;
-  todo: string;
-  desc: string;
-  done: boolean;
+/*
+  ! axios 라이브러리 사용법 : axios.get() 함수 
+  * 응답 객체가 가지고 있는 6가지 속성 → https://axios-http.com/kr/docs/req_config
+  "config": 요청 시에 사용된 config 옵션
+  "data": 수신된 응답 데이터
+  "status": 서버가 응답한 HTTP 상태 코드
+  "statusText": 서버의 HTTP 상태를 나타내는 문자열 정보
+  "headers": 백엔드 API 서버가 응답할 떄 사용된 응답 HTTP 헤더
+  "request": 서버와의 통신에 사용된 XMLHttpRequest 객체의 정보
+ */
+
+// [ 사용예시 : promise ]
+const requestAPI_promise = () => {
+  const url = "/api/todolist/gdhong";
+  axios.get(url).then((response) => {
+    console.log("# Promise 응답 객체 : ", response);
+  });
 };
 
-const listUrl = "/api/todolist_long/gdhong";
-const todoUrlPrefix = "/api/todolist_long/gdhong/";
-
-//* 4건의 목록을 조회한 후 첫 번째, 두 번째 Todo르 순차적으로 순회하며 조회하기
-const requestAPI = async () => {
-  let todoList: Array<TodoType> = [];
-
-  // * async-await 예외처리
-  try {
-    let response = await axios.get(listUrl);
-    todoList = response.data;
-    console.log("# TodoList : ", todoList);
-    for (let i = 0; i < todoList.length; i++) {
-      response = await axios.get(todoUrlPrefix + todoList[i].id);
-      console.log(`# ${i + 1}번째 Todo : `, response.data);
-    }
-  } catch (e) {
-    console.log(e instanceof Error ? e.message : e);
-  }
-
-  // axios
-  //   .get(listUrl)
-  //   .then((response) => {
-  //     todoList = response.data;
-  //     console.log("# TodoList : ", todoList);
-  //     return todoList[0].id;
-  //   })
-  //   .then((id) => {
-  //     return axios.get(todoUrlPrefix + id);
-  //   })
-  //   .then((response) => {
-  //     console.log("## 첫 번째 Todo : ", response.data);
-  //     return todoList[1].id;
-  //   })
-  //   .then((id) => {
-  //     axios
-  //       .get(todoUrlPrefix + id)
-  //       .then((response) => {
-  //         console.log("## 두 번째 Todo : ", response.data);
-  //       })
-  //       .catch((e) => {
-  //         if (e instanceof Error) console.log("# 에러 : ", e.message);
-  //         else console.log(e);
-  //       });
-  //   })
-  //   .catch((e) => {
-  //     if (e instanceof Error) console.log("# 에러 : ", e.message);
-  //     else console.log(e);
-  //   });
-
-  // let response = await axios.get(listUrl);
-  // todoList = response.data;
-  // console.log("# TodoList : ", todoList);
-  // for (let i = 0; i < todoList.length; i++) {
-  //   response = await axios.get(todoUrlPrefix + todoList[i].id);
-  //   console.log(`# ${i + 1}번째 Todo : `, response.data);
-  // }
+// [ 사용예시 : async-await ]
+const requestAPI_async_await = async () => {
+  const url = "/api/todoList_long/gdhong";
+  const response = await axios.get(url);
+  console.log("# Async-Await 응답 객체 : ", response);
 };
-requestAPI();
+
+requestAPI_promise();
+requestAPI_async_await();
 
 const App = () => {
   return (
-    <div>
-      <h2>Console.log를 확인하세요.</h2>
-    </div>
+    <>
+      <h2>Console.log를 확인합니다.</h2>
+    </>
   );
 };
 
