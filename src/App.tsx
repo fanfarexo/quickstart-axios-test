@@ -36,12 +36,10 @@ const requestAPI = async () => {
   let response = await axios.get(listUrl);
   todoList = response.data;
   console.log("# TodoList : ", todoList);
-
-  response = await axios.get(todoUrlPrefix + todoList[0].id);
-  console.log("## 첫 번째 Todo : ", response.data);
-
-  response = await axios.get(todoUrlPrefix + todoList[1].id);
-  console.log("## 두 번째 Todo : ", response.data);
+  for (let i = 0; i < todoList.length; i++) {
+    response = await axios.get(todoUrlPrefix + todoList[i].id);
+    console.log(`# ${i + 1}번째 Todo : `, response.data);
+  }
 };
 requestAPI();
 
