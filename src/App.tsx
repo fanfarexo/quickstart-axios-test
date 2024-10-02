@@ -18,10 +18,20 @@ import axios from "axios";
 
 // [ 사용예시 : promise ]
 const requestAPI_promise = async () => {
-  const url = "/api/todolist/gdhong";
-  axios.get(url).then((response) => {
-    console.log("# Promise 응답 객체 : ", response);
-  });
+  const url = "/api/todolist_long/gdhong";
+  axios
+    .get(url, { timeout: 900 })
+    .then((response) => {
+      console.log("# Promise 응답 객체 : ", response);
+    })
+    .catch((e) => {
+      // console.log("## 다음 오류가 발생했습니다.");
+      // if (e instanceof Error) console.log(e.message);
+      // else console.log(e);
+      console.log(
+        `## 다음 오류가 발생했습니다. ${e instanceof Error ? e.message : e}`
+      );
+    });
 };
 
 const requestAPI_promise_post = () => {
@@ -33,10 +43,22 @@ const requestAPI_promise_post = () => {
 };
 
 // [ 사용예시 : async-await ]
+// const requestAPI_async_await = async () => {
+//   const url = "/api/todoList_long/gdhong";
+//   const response = await axios.get(url, {timeout: 900});
+//   console.log("# Async-Await 응답 객체 : ", response);
+// };
+
 const requestAPI_async_await = async () => {
   const url = "/api/todoList_long/gdhong";
-  const response = await axios.get(url);
-  console.log("# Async-Await 응답 객체 : ", response);
+  try {
+    const response = await axios.get(url, { timeout: 900 });
+    console.log("# Async-Await 응답 객체 : ", response);
+  } catch (e) {
+    console.log(
+      `## 다음 오류가 발생했습니다. ${e instanceof Error ? e.message : e}`
+    );
+  }
 };
 
 const requestAPI_async_await_post = async () => {
@@ -48,8 +70,9 @@ const requestAPI_async_await_post = async () => {
 
 requestAPI_promise();
 requestAPI_async_await();
+
 // requestAPI_promise_post();
-requestAPI_async_await_post();
+// requestAPI_async_await_post();
 
 const App = () => {
   return (
