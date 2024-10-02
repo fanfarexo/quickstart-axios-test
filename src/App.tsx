@@ -1,7 +1,5 @@
 import axios from "axios";
 
-//! Promise(ES6 비동기 처리 패턴)
-
 type TodoType = {
   id: number;
   todo: string;
@@ -12,28 +10,38 @@ type TodoType = {
 const listUrl = "/api/todolist_long/gdhong";
 const todoUrlPrefix = "/api/todolist_long/gdhong/";
 
-const requestAPI = () => {
+//* 4건의 목록을 조회한 후 첫 번째, 두 번째 Todo르 순차적으로 순회하며 조회하기
+const requestAPI = async () => {
   let todoList: Array<TodoType> = [];
 
-  axios
-    .get(listUrl)
-    .then((response) => {
-      todoList = response.data;
-      console.log("# TodoList : ", todoList);
-      return todoList[0].id;
-    })
-    .then((id) => {
-      return axios.get(todoUrlPrefix + id);
-    })
-    .then((response) => {
-      console.log("## 첫 번째 Todo : ", response.data);
-      return todoList[1].id;
-    })
-    .then((id) => {
-      axios.get(todoUrlPrefix + id).then((response) => {
-        console.log("## 두 번째 Todo : ", response.data);
-      });
-    });
+  // axios
+  //   .get(listUrl)
+  //   .then((response) => {
+  //     todoList = response.data;
+  //     console.log("# TodoList : ", todoList);
+  //     return todoList[0].id;
+  //   })
+  //   .then((id) => {
+  //     return axios.get(todoUrlPrefix + id);
+  //   })
+  //   .then((response) => {
+  //     console.log("## 첫 번째 Todo : ", response.data);
+  //     return todoList[1].id;
+  //   })
+  //   .then((id) => {
+  //     axios.get(todoUrlPrefix + id).then((response) => {
+  //       console.log("## 두 번째 Todo : ", response.data);
+  //     });
+  //   });
+  let response = await axios.get(listUrl);
+  todoList = response.data;
+  console.log("# TodoList : ", todoList);
+
+  response = await axios.get(todoUrlPrefix + todoList[0].id);
+  console.log("## 첫 번째 Todo : ", response.data);
+
+  response = await axios.get(todoUrlPrefix + todoList[1].id);
+  console.log("## 두 번째 Todo : ", response.data);
 };
 requestAPI();
 
