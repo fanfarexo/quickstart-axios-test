@@ -11,11 +11,24 @@ import axios from "axios";
   "request": 서버와의 통신에 사용된 XMLHttpRequest 객체의 정보
  */
 
+/*
+   ! axios.post() 함수
+   * data는 POST 요청의 HTTP Content Body로 전송할 데이터 : axios.post(url, data, config)
+*/
+
 // [ 사용예시 : promise ]
-const requestAPI_promise = () => {
+const requestAPI_promise = async () => {
   const url = "/api/todolist/gdhong";
   axios.get(url).then((response) => {
     console.log("# Promise 응답 객체 : ", response);
+  });
+};
+
+const requestAPI_promise_post = () => {
+  const url = "/api/todolist/gdhong";
+  const data = { todo: "윗몸일으키기 5세트", desc: "너무 빠르지 않게..." };
+  axios.post(url, data).then((response) => {
+    console.log("# POST_promise", response);
   });
 };
 
@@ -26,8 +39,17 @@ const requestAPI_async_await = async () => {
   console.log("# Async-Await 응답 객체 : ", response);
 };
 
+const requestAPI_async_await_post = async () => {
+  const url = "/api/todoList_long/gdhong";
+  const data = { todo: "한자 공부", desc: "필기하며 외우기" };
+  const addedData = await axios.post(url, data);
+  console.log("# POST_promise : ", addedData);
+};
+
 requestAPI_promise();
 requestAPI_async_await();
+// requestAPI_promise_post();
+requestAPI_async_await_post();
 
 const App = () => {
   return (
