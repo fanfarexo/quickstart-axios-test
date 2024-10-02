@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const requestAPI = () => {
-  const url = "https://todosvc.vercel.app/todolist/gdhong";
+  const url = "/api/todolist/gdhong";
   axios.get(url).then((responst) => {
     console.log("# 응답 객체 : ", responst);
   });
